@@ -1,0 +1,536 @@
+Function 'main'
+Lines executed:35.54% of 332
+
+Function 'write_ppm_tiff'
+Lines executed:76.32% of 38
+
+Function 'jpeg_thumb'
+Lines executed:0.00% of 15
+
+Function 'tiff_head'
+Lines executed:0.00% of 66
+
+Function 'tiff_set'
+Lines executed:0.00% of 15
+
+Function 'flip_index'
+Lines executed:100.00% of 5
+
+Function 'stretch'
+Lines executed:7.69% of 26
+
+Function 'fuji_rotate'
+Lines executed:7.69% of 26
+
+Function 'convert_to_rgb'
+Lines executed:94.64% of 56
+
+Function 'apply_profile'
+Lines executed:0.00% of 35
+
+Function 'identify'
+Lines executed:23.02% of 908
+
+Function 'find_green'
+Lines executed:0.00% of 14
+
+Function 'guess_byte_order'
+Lines executed:0.00% of 11
+
+Function 'simple_coeff'
+Lines executed:0.00% of 2
+
+Function 'adobe_coeff'
+Lines executed:100.00% of 11
+
+Function 'parse_foveon'
+Lines executed:0.00% of 73
+
+Function 'foveon_gets'
+Lines executed:0.00% of 6
+
+Function 'parse_redcine'
+Lines executed:0.00% of 22
+
+Function 'parse_cine'
+Lines executed:0.00% of 42
+
+Function 'parse_smal'
+Lines executed:0.00% of 14
+
+Function 'parse_qt'
+Lines executed:0.00% of 13
+
+Function 'parse_riff'
+Lines executed:0.00% of 28
+
+Function 'parse_jpeg'
+Lines executed:0.00% of 17
+
+Function 'parse_fuji'
+Lines executed:0.00% of 32
+
+Function 'parse_phase_one'
+Lines executed:0.00% of 57
+
+Function 'parse_sinar_ia'
+Lines executed:0.00% of 25
+
+Function 'parse_rollei'
+Lines executed:0.00% of 31
+
+Function 'parse_ciff'
+Lines executed:0.00% of 80
+
+Function 'ciff_block_1030'
+Lines executed:0.00% of 10
+
+Function 'parse_external_jpeg'
+Lines executed:0.00% of 35
+
+Function 'parse_minolta'
+Lines executed:0.00% of 27
+
+Function 'apply_tiff'
+Lines executed:41.54% of 130
+
+Function 'parse_tiff'
+Lines executed:100.00% of 8
+
+Function 'parse_tiff_ifd'
+Lines executed:21.20% of 415
+
+Function 'parse_kodak_ifd'
+Lines executed:0.00% of 28
+
+Function 'linear_table'
+Lines executed:0.00% of 7
+
+Function 'parse_mos'
+Lines executed:0.00% of 48
+
+Function 'romm_coeff'
+Lines executed:0.00% of 6
+
+Function 'parse_gps'
+Lines executed:53.85% of 13
+
+Function 'parse_exif'
+Lines executed:84.62% of 26
+
+Function 'get_timestamp'
+Lines executed:84.62% of 13
+
+Function 'parse_makernote'
+Lines executed:47.46% of 236
+
+Function 'parse_thumb_note'
+Lines executed:0.00% of 8
+
+Function 'tiff_get'
+Lines executed:100.00% of 8
+
+Function 'recover_highlights'
+Lines executed:0.00% of 51
+
+Function 'blend_highlights'
+Lines executed:0.00% of 22
+
+Function 'median_filter'
+Lines executed:17.65% of 17
+
+Function 'ahd_interpolate'
+Lines executed:0.00% of 72
+
+Function 'xtrans_interpolate'
+Lines executed:0.00% of 159
+
+Function 'cielab'
+Lines executed:0.00% of 19
+
+Function 'ppg_interpolate'
+Lines executed:0.00% of 35
+
+Function 'vng_interpolate'
+Lines executed:0.00% of 82
+
+Function 'lin_interpolate'
+Lines executed:100.00% of 33
+
+Function 'border_interpolate'
+Lines executed:100.00% of 16
+
+Function 'pre_interpolate'
+Lines executed:33.33% of 33
+
+Function 'scale_colors'
+Lines executed:30.34% of 89
+
+Function 'wavelet_denoise'
+Lines executed:0.00% of 57
+
+Function 'hat_transform'
+Lines executed:0.00% of 8
+
+Function 'cam_xyz_coeff'
+Lines executed:100.00% of 16
+
+Function 'pseudoinverse'
+Lines executed:100.00% of 21
+
+Function 'gamma_curve'
+Lines executed:82.61% of 23
+
+Function 'subtract'
+Lines executed:0.00% of 30
+
+Function 'bad_pixels'
+Lines executed:46.15% of 39
+
+Function 'remove_zeroes'
+Lines executed:0.00% of 11
+
+Function 'crop_masked_pixels'
+Lines executed:59.62% of 52
+
+Function 'foveon_interpolate'
+Lines executed:0.00% of 292
+
+Function 'foveon_apply_curve'
+Lines executed:0.00% of 1
+
+Function 'foveon_make_curves'
+Lines executed:0.00% of 5
+
+Function 'foveon_make_curve'
+Lines executed:0.00% of 11
+
+Function 'foveon_avg'
+Lines executed:0.00% of 7
+
+Function 'foveon_fixed'
+Lines executed:0.00% of 7
+
+Function 'foveon_camf_matrix'
+Lines executed:0.00% of 23
+
+Function 'foveon_camf_param'
+Lines executed:0.00% of 13
+
+Function 'foveon_load_camf'
+Lines executed:0.00% of 30
+
+Function 'foveon_dp_load_raw'
+Lines executed:0.00% of 15
+
+Function 'foveon_huff'
+Lines executed:0.00% of 9
+
+Function 'foveon_sd_load_raw'
+Lines executed:0.00% of 20
+
+Function 'foveon_thumb'
+Lines executed:0.00% of 25
+
+Function 'foveon_decoder'
+Lines executed:0.00% of 21
+
+Function 'redcine_load_raw'
+Lines executed:0.00% of 36
+
+Function 'smal_v9_load_raw'
+Lines executed:0.00% of 16
+
+Function 'fill_holes'
+Lines executed:0.00% of 23
+
+Function 'median4'
+Lines executed:0.00% of 2
+
+Function 'smal_v6_load_raw'
+Lines executed:0.00% of 8
+
+Function 'smal_decode_segment'
+Lines executed:0.00% of 46
+
+Function 'samsung3_load_raw'
+Lines executed:0.00% of 37
+
+Function 'samsung2_load_raw'
+Lines executed:0.00% of 13
+
+Function 'samsung_load_raw'
+Lines executed:0.00% of 22
+
+Function 'sony_arw2_load_raw'
+Lines executed:0.00% of 22
+
+Function 'sony_arw_load_raw'
+Lines executed:0.00% of 10
+
+Function 'sony_load_raw'
+Lines executed:0.00% of 19
+
+Function 'sony_decrypt'
+Lines executed:0.00% of 12
+
+Function 'kodak_thumb_load_raw'
+Lines executed:0.00% of 7
+
+Function 'kodak_rgb_load_raw'
+Lines executed:0.00% of 10
+
+Function 'kodak_ycbcr_load_raw'
+Lines executed:0.00% of 18
+
+Function 'kodak_65000_load_raw'
+Lines executed:0.00% of 10
+
+Function 'kodak_65000_decode'
+Lines executed:0.00% of 29
+
+Function 'kodak_262_load_raw'
+Lines executed:0.00% of 28
+
+Function 'kodak_c603_load_raw'
+Lines executed:0.00% of 17
+
+Function 'kodak_c330_load_raw'
+Lines executed:0.00% of 18
+
+Function 'eight_bit_load_raw'
+Lines executed:0.00% of 10
+
+Function 'kodak_dc120_load_raw'
+Lines executed:0.00% of 8
+
+Function 'lossy_dng_load_raw'
+Lines executed:0.00% of 47
+
+Function 'kodak_jpeg_load_raw'
+Lines executed:0.00% of 28
+
+Function 'fill_input_buffer'
+Lines executed:0.00% of 6
+
+Function 'kodak_radc_load_raw'
+Lines executed:0.00% of 58
+
+Function 'quicktake_100_load_raw'
+Lines executed:0.00% of 36
+
+Function 'minolta_rd175_load_raw'
+Lines executed:0.00% of 19
+
+Function 'olympus_load_raw'
+Lines executed:0.00% of 33
+
+Function 'panasonic_load_raw'
+Lines executed:0.00% of 16
+
+Function 'pana_bits'
+Lines executed:0.00% of 7
+
+Function 'canon_rmf_load_raw'
+Lines executed:0.00% of 12
+
+Function 'nokia_load_raw'
+Lines executed:0.00% of 19
+
+Function 'packed_load_raw'
+Lines executed:0.00% of 26
+
+Function 'imacon_full_load_raw'
+Lines executed:0.00% of 5
+
+Function 'sinar_4shot_load_raw'
+Lines executed:0.00% of 20
+
+Function 'unpacked_load_raw'
+Lines executed:0.00% of 9
+
+Function 'leaf_hdr_load_raw'
+Lines executed:0.00% of 20
+
+Function 'hasselblad_load_raw'
+Lines executed:0.00% of 39
+
+Function 'phase_one_load_raw_c'
+Lines executed:0.00% of 41
+
+Function 'ph1_bithuff'
+Lines executed:0.00% of 12
+
+Function 'phase_one_load_raw'
+Lines executed:0.00% of 14
+
+Function 'phase_one_correct'
+Lines executed:0.00% of 156
+
+Function 'phase_one_flat_field'
+Lines executed:0.00% of 36
+
+Function 'raw'
+Lines executed:0.00% of 1
+
+Function 'rollei_load_raw'
+Lines executed:0.00% of 14
+
+Function 'rollei_thumb'
+Lines executed:0.00% of 12
+
+Function 'layer_thumb'
+Lines executed:0.00% of 13
+
+Function 'ppm16_thumb'
+Lines executed:0.00% of 11
+
+Function 'ppm_thumb'
+Lines executed:0.00% of 9
+
+Function 'minolta_z2'
+Lines executed:0.00% of 6
+
+Function 'nikon_3700'
+Lines executed:0.00% of 9
+
+Function 'nikon_e2100'
+Lines executed:0.00% of 6
+
+Function 'nikon_e995'
+Lines executed:0.00% of 8
+
+Function 'nikon_yuv_load_raw'
+Lines executed:0.00% of 11
+
+Function 'nikon_load_raw'
+Lines executed:0.00% of 43
+
+Function 'pentax_load_raw'
+Lines executed:0.00% of 20
+
+Function 'packed_dng_load_raw'
+Lines executed:0.00% of 12
+
+Function 'lossless_dng_load_raw'
+Lines executed:0.00% of 32
+
+Function 'ljpeg_idct'
+Lines executed:0.00% of 23
+
+Function 'adobe_copy_pixel'
+Lines executed:0.00% of 12
+
+Function 'canon_sraw_load_raw'
+Lines executed:0.00% of 53
+
+Function 'lossless_jpeg_load_raw'
+Lines executed:90.91% of 22
+
+Function 'ljpeg_row'
+Lines executed:65.38% of 26
+
+Function 'ljpeg_diff'
+Lines executed:100.00% of 6
+
+Function 'ljpeg_end'
+Lines executed:100.00% of 4
+
+Function 'ljpeg_start'
+Lines executed:90.48% of 42
+
+Function 'canon_load_raw'
+Lines executed:0.00% of 40
+
+Function 'canon_has_lowbits'
+Lines executed:0.00% of 6
+
+Function 'crw_init_tables'
+Lines executed:0.00% of 5
+
+Function 'make_decoder'
+Lines executed:0.00% of 1
+
+Function 'make_decoder_ref'
+Lines executed:100.00% of 12
+
+Function 'getbithuff'
+Lines executed:100.00% of 14
+
+Function 'canon_s2is'
+Lines executed:0.00% of 4
+
+Function 'canon_600_correct'
+Lines executed:0.00% of 12
+
+Function 'canon_600_load_raw'
+Lines executed:0.00% of 15
+
+Function 'canon_600_coeff'
+Lines executed:0.00% of 11
+
+Function 'canon_600_auto_wb'
+Lines executed:0.00% of 35
+
+Function 'canon_600_color'
+Lines executed:0.00% of 22
+
+Function 'canon_600_fixed_wb'
+Lines executed:0.00% of 10
+
+Function 'cubic_spline'
+Lines executed:0.00% of 38
+
+Function 'read_shorts'
+Lines executed:80.00% of 5
+
+Function 'getreal'
+Lines executed:35.29% of 17
+
+Function 'int_to_float'
+Lines executed:0.00% of 1
+
+Function 'getint'
+Lines executed:0.00% of 1
+
+Function 'get4'
+Lines executed:100.00% of 4
+
+Function 'sget4'
+Lines executed:75.00% of 4
+
+Function 'get2'
+Lines executed:NAN % of 4
+
+Function 'sget2'
+Lines executed:0.00% of 1
+
+Function 'derror'
+Lines executed:0.00% of 8
+
+Function 'merror'
+Lines executed:50.00% of 4
+
+Function 'fcol'
+Lines executed:100.00% of 4
+
+File 'dcraw2.c'
+Lines executed:17.47% of 6130
+Creating 'dcraw2.c.gcov'
+
+File '/usr/include/bits/stdlib-float.h'
+Lines executed:100.00% of 1
+Creating 'stdlib-float.h.gcov'
+
+File '/usr/include/stdlib.h'
+Lines executed:100.00% of 1
+Creating 'stdlib.h.gcov'
+
+File '/usr/include/bits/stdio.h'
+Lines executed:50.00% of 2
+Creating 'stdio.h.gcov'
+
+File '/usr/include/bits/byteswap.h'
+Lines executed:100.00% of 1
+Creating 'byteswap.h.gcov'
+
