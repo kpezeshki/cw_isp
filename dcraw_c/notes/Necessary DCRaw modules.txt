@@ -1,0 +1,27 @@
+DCraw data flow:
+
+The first few thousand lines are used to set up constants and load in data from the RAW input file
+iheight holds image height
+iwidth holds image width
+BAYER holds raw image data, is set when raw files are read
+
+1. Raw image data read by per-camera classes
+    a. Raw image data stored in BAYER
+    b. Image height and width stored in height / width
+5. colorcheck called if camera isn't supported by a .dng file
+    a. writes to matrix cut with colorchecker square coordinates
+6. Foveon images handled (not super relevant to us)
+7. pre-interpolate called
+    a. Reads from BAYER array, writes to img matrix
+8. lin_interpolate called
+    a. Reads from BAYER array, writes to img matrix
+9. convert_to_rgb called
+    a. calls gamma_curve
+        i. writes to array curve
+    b. calls FC, which returns matrix values from a predefined matrix
+    c. calls CLIP, which restricts an integer to 16 bits
+    a. calls pseudoinverse
+        i.  calculates the inverse of a matrix and returns a pointer to the address of the result
+    b. writes to img
+
+
