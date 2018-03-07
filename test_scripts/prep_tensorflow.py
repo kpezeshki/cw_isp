@@ -18,7 +18,7 @@ directory = "/home/kaveh/cw/images/images"
 directory_conv = "/home/kaveh/cw/images/images/raw"
 
 #dcraw executables
-dcraw_execs = ["dcraw1", "dcraw2"]
+dcraw_execs = ["dcraw_fp16", "dcraw_fp64", "dcraw_fp256"]
 
 #dcraw conversion command
 dcraw_conv = "-r 1 1 1 1 -q 0"
@@ -37,22 +37,22 @@ dir_prefix = directory_conv+"_"
 for executable in dcraw_execs:
     dir_to_create = dir_prefix + executable
     print("creating: " + dir_to_create)
-    #os.popen("mkdir " + dir_to_create)
-    print("mkdir " + dir_to_create)
+    os.popen("mkdir " + dir_to_create)
+    #print("mkdir " + dir_to_create)
     directories.append(dir_to_create)
 
 print("\n-----CONVERTING IMAGES------")
 for executable in dcraw_execs:
     print("\nconverting to ppm with: " + executable)
-    #os.popen("cd "+ directory_conv + "; " "for filename in *.CR2 ; do " + executable + " " + dcraw_conv + " \"$filename\" ; done")
+    os.popen("cd "+ directory_conv + "; " "for filename in *.CR2 ; do " + executable + " " + dcraw_conv + " \"$filename\" ; done")
     print("cd "+ directory_conv + "; " "for filename in *.CR2 ; do ./" + executable + " " + dcraw_conv + " \"$filename\" ; done")
     print("converting to png")
-    #os.popen("cd " + directory_conv + "; "  + conv_cmd)
-    print("cd " + directory_conv + "; "  + conv_cmd)
+    os.popen("cd " + directory_conv + "; "  + conv_cmd)
+    #print("cd " + directory_conv + "; "  + conv_cmd)
     print("moving images to directory")
     dir_to_move = dir_prefix + executable
-    #os.popen("mv " + directory_conv + "/*png " + "dir_to_move")
-    print("mv " + directory_conv + "/*png " + dir_to_move)
+    os.popen("mv " + directory_conv + "/.*png " + "dir_to_move")
+    #print("mv " + directory_conv + "/*png " + dir_to_move)
     print("cleaning up")
-    print("rm " + directory_conv + " *.ppm")
-    #os.popen("rm " + directory_conv + "*.ppm")
+    #print("rm " + directory_conv + " *.ppm")
+    os.popen("rm " + directory_conv + "/*.ppm")
