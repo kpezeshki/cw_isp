@@ -18,7 +18,7 @@ directory = "/home/kaveh/cw/images/images"
 directory_conv = "/home/kaveh/cw/images/images/raw"
 
 #dcraw executables
-dcraw_execs = ["dcraw_nowhite"]
+dcraw_execs = ["dcraw_dp_fixed4", "dcraw_dp_fixed6", "dcraw_dp_fixed8"]
 
 #dcraw conversion command
 dcraw_conv = "-r 1 1 1 1 -q 0"
