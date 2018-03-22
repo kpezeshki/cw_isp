@@ -1992,6 +1992,7 @@ void CLASS crop_masked_pixels()
   int row, col;
   unsigned r, c, m, mblack[8], zero, val;
 
+/*
   if (fuji_width) {
     for (row=0; row < raw_height-top_margin*2; row++) {
       for (col=0; col < fuji_width << !fuji_layout; col++) {
@@ -2006,12 +2007,17 @@ void CLASS crop_masked_pixels()
 	  BAYER(r,c) = RAW(row+top_margin,col+left_margin);
       }
     }
-  } else {
+  } 
+*/
+//else {
+
     for (row=0; row < height; row++)
       for (col=0; col < width; col++)
 	BAYER2(row,col) = RAW(row+top_margin,col+left_margin);
-  }
-  if (mask[0][3] > 0) goto mask_set;
+//  }
+
+//  if (mask[0][3] > 0) goto mask_set;
+/*
   if (load_raw == &CLASS canon_load_raw ||
       load_raw == &CLASS lossless_jpeg_load_raw) {
     mask[0][1] = mask[1][1] += 2;
@@ -2030,8 +2036,11 @@ sides:
     mask[1][1] += left_margin+width;
     mask[1][3] += raw_width;
   }
+*/
+/*
 mask_set:
   memset (mblack, 0, sizeof mblack);
+
   for (zero=m=0; m < 8; m++)
     for (row=MAX(mask[m][0],0); row < MIN(mask[m][2],raw_height); row++)
       for (col=MAX(mask[m][1],0); col < MIN(mask[m][3],raw_width); col++) {
@@ -2048,6 +2057,7 @@ mask_set:
     FORC4 cblack[c] = mblack[c] / mblack[4+c];
     cblack[4] = cblack[5] = cblack[6] = 0;
   }
+*/
 }
 
 void CLASS remove_zeroes()
@@ -6316,13 +6326,13 @@ next:
     }
     iheight = (height + shrink) >> shrink;
     iwidth  = (width  + shrink) >> shrink;
-    /*if (raw_image) {
+    if (raw_image) {
       image = (ushort (*)[4]) calloc (iheight, iwidth*sizeof *image);
       merror (image, "main()");
       crop_masked_pixels();
       free (raw_image);
     }
-    */
+   
     //if (zero_is_bad) remove_zeroes();
     quality = 2 + !fuji_width;
     if (user_qual >= 0) quality = user_qual;
