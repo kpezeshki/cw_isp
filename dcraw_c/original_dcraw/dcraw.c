@@ -1,5 +1,5 @@
 /*
-   dcraw.c -- Dave Coffin's raw photo decoder
+   /craw.c -- Dave Coffin's raw photo decoder
    Copyright 1997-2016 by Dave Coffin, dcoffin a cybercom o net
 
    This is a command-line ANSI C program to convert raw photos from
@@ -9799,7 +9799,7 @@ void CLASS write_ppm_tiff()
   if (!((highlight & ~2) || no_auto_bright))
     for (white=c=0; c < colors; c++) {
       for (val=0x2000, total=0; --val > 32; )
-	if ((total += histogram[c][val]) > perc) break;
+      	if ((total += histogram[c][val]) > perc) break;
       if (white < val) white = val;
     }
   gamma_curve (gamm[0], gamm[1], 2, (white << 3)/bright);
