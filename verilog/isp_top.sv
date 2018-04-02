@@ -25,6 +25,7 @@ module control(input  logic        clk, reset, new_frame, data_valid, read_data,
         end
 
         else begin
+        //data valid goes low
             crop_enable  <= crop_enable  | read_data;
             wb_enable    <= wb_enable    | crop_enable;
             write_enable <= write_enable | data_valid;
@@ -167,7 +168,7 @@ module demosaic #()
             next3 <= 1;
         end
         else if (col_read != FWIDTH-1) col_read <= col_read + 1;
-        else if ((row_read == 0) || end_of_row) begin
+        else if ((row_read == 0) && (col_read == FWIDTH - 1) || end_of_row) begin
             row_read <= row_read + 1;
             col_read <= 0;
             if (next1) begin
@@ -342,10 +343,9 @@ module demosaic #()
                 blue_multi = 1;
         endcase
  
-    logic row_cal;
 
     assign data_v = (row_read != 0) && (col_shift != 0) && (col_shift != 1);
-    assign done = (row_cal == FHEIGHT - 1) && end_of_row;
+    assign done = (row_calc == FHEIGHT - 1) && end_of_row;
 
 endmodule
 
