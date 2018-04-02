@@ -9,27 +9,37 @@ module inter_reg #(parameter WIDTH = 8)
 endmodule
 
 module control(input  logic        clk, reset, new_frame, data_valid, read_data,
-               input  logic [31:0] init_write_address,
+                //new_frame: high for one cycle when new frame introduced, low otherwise
+                //data_valid: supplied by demosaicing module, high when output data should be provided to subsequent modules
+                //read_data: supplied by demosaicing module, high when image data should be read to the white balancing module
+               input  logic [31:0] frame_buffer_base_adr,
+               //frame_buffer_base_adr: the base address to which the output image should be written to
                output logic [31:0] write_address,
-               output logic        write_enable, crop_enable, wb_enable, cc_enable
+               //write_address: the address that the module should write to in the RAM buffer
+               output logic        write_enable, wb_enable, cc_enable
+               //write_enable: part of the RAM interface, high when data should be written to the RAM
+               //wb_enable: enable line for the white balancing module
+               //cc_enable: enable like for the color conversion module
                );
     
-    assign cc_enable = data_valid;
+    logic data_valid_register; //to provide a 1 clock signal delay between data_valid going high and write_enable going high
+
+    assign cc_enable = data_valid; //color conversion module should always run when it is receiving valid data
+    assign wb_enable = read_data; //white balancing module should always run when data is being read
+    assign write_enable = data_valid_register; //providing one clock delay between data_valid and write_enable
 
     always_ff @(posedge clk, posedge reset) begin
         if (reset) begin
-            write_enable <= 0;
-            crop_enable <= 0;
-            wb_enable <= 0;
-            write_address <= init_write_address;
+            //on a reset signal we set the write address to the base write address
+            write_address <= frame_buffer_base_adr;
+            //we also set data_valid_register to 0, as at this point demosaicing module will not be providing valid data
+            data_valid_register <= 0;
         end
 
         else begin
-        //data valid goes low
-            crop_enable  <= crop_enable  | read_data;
-            wb_enable    <= wb_enable    | crop_enable;
-            write_enable <= write_enable | data_valid;
-
+            //when data_valid goes high wait one cycle for pixels to propagate through colorspace conversion, then set data_valid high
+            data_valid_register <= data_valid;
+            //we also increment the write address by 1 when write_enable is high
             write_address <= write_address + write_enable;
         end
     end
@@ -41,25 +51,55 @@ module isp_top #(parameter PIXEL_WIDTH = 16,
              parameter FRAC_BITS_WB = 8)
            (input logic clk, reset, new_frame,
            //configuration
-           input logic [31:0] init_write_address,
+           input logic [31:0] frame_buffer_base_adr,
            input logic [9:0]  top_margin, left_margin,
            input logic [15:0] crop_height, crop_width,
-           input logic [15:0] color_scale, cblack,
+           /*
+           top_margin:  height difference between original image and output image
+           left_margin: size difference between the widths of the input image and the output image
+           crop_height: the height of the cropped output image
+           crop_width:  the width of the cropped output image
+
+           the image is cropped as shown below:
+
+           |------------------------------------|
+           |   Input image                      |
+           |                                    |
+           |          |-------------------------|
+           |          |  Cropped output image   |
+           |          |                         |
+           |          |                         |   
+           |          |                         |
+           |          |                         | 
+           |------------------------------------|
+           */
+           input logic [15:0] color_scale, cblack, 
+           //color_scale: color scaling coefficients for white balancing. This is camera-dependent
+           //cblack:      black levels for the output image (camera-dependent?)
            input logic [INT_BITS_CC+FRAC_BITS_CC+PIXEL_WIDTH-1:0] color_conv,
+           //color_conv:  color conversion coefficients for color conversion. (camera-dependent?)
            input logic [63:0] read_data,
+           //read_data: input data from memory
            //memory interface
            output logic write_enable,
+           //write_data: part of RAM interface, high when data should be written to the RAM
            output logic [31:0] write_address, read_address,
+           //write_address, read_address: write and read addresses to the memory buffer
            output logic [63:0] write_data
+           //write_data: data to write into RAM. Only the least significant 16 bits are used
            );
 
            //control signals
            logic data_valid, crop_enable, wb_enable, cc_enable;
 
            //inter-module data signals
-           logic [15:0] cropped_pixel, wb_pixel;
-           logic [15:0] demos_pixel[3:0];
-           logic [15:0] cc_pixel[3:0];
+           logic [15:0] wb_pixel;
+           //wb_pixel: pixel output after white balancing
+
+           logic [15:0] demos_pixel[2:0];
+           //demos_pixel: pixel output after demosaicing. 2D array as it contains all three color components
+           logic [15:0] cc_pixel[2:0];
+           //cc_pixel: pixel after color conversion step. This is the final output pixel.
 
            //combinational logic
            assign write_data = {cc_pixel[0], cc_pixel[1], cc_pixel[2], 16'b0};
@@ -73,36 +113,14 @@ module isp_top #(parameter PIXEL_WIDTH = 16,
                .data_valid (data_valid),
                .read_data  (read_data),
                //configuration inputs
-               .init_write_address (init_write_address),
+               .frame_buffer_base_adr (frame_buffer_base_adr),
                //outputs
                .write_address (write_address),
                .write_enable  (write_enable),
-               .crop_enable   (crop_enable),
                .wb_enable     (wb_enable),
                .cc_enable     (cc_enable)
            );
 
-           colorspace_conversion 
-           #(.PIXEL_WIDTH (PIXEL_WIDTH),
-             .FRAC_BITS   (FRAC_BITS_CC),
-             .INT_BITS    (INT_BITS_CC)
-           )
-           cc_conv (
-               .clk      (clk),
-               .reset    (reset),
-               //control signals
-               .data_ready (cc_enable),
-               //input pixel
-               .pixel_in_red   (demos_pixel[0]),
-               .pixel_in_green (demos_pixel[1]),
-               .pixel_in_blue  (demos_pixel[2]),
-               //configuration
-               .cc_coeff (color_conv),
-               //output pixel
-               .pixel_out_red   (cc_pixel[0]),
-               .pixel_out_green (cc_pixel[1]),
-               .pixel_out_blue  (cc_pixel[2])
-           );
 
            white_balancing 
            #(.FRACT_BITS (FRAC_BITS_WB))
@@ -133,6 +151,28 @@ module isp_top #(parameter PIXEL_WIDTH = 16,
                .green  (demos_pixel[1]),
                .blue   (demos_pixel[2]),
                .adr    (read_address)
+           );
+
+           colorspace_conversion 
+           #(.PIXEL_WIDTH (PIXEL_WIDTH),
+             .FRAC_BITS   (FRAC_BITS_CC),
+             .INT_BITS    (INT_BITS_CC)
+           )
+           cc_conv (
+               .clk      (clk),
+               .reset    (reset),
+               //control signals
+               .data_ready (cc_enable),
+               //input pixel
+               .pixel_in_red   (demos_pixel[0]),
+               .pixel_in_green (demos_pixel[1]),
+               .pixel_in_blue  (demos_pixel[2]),
+               //configuration
+               .cc_coeff (color_conv),
+               //output pixel
+               .pixel_out_red   (cc_pixel[0]),
+               .pixel_out_green (cc_pixel[1]),
+               .pixel_out_blue  (cc_pixel[2])
            );
 
 endmodule
