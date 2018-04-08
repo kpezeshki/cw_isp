@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////
 // colorspace_conversion.sv
-// Christine Goins  cgoins@hmc.edu  3/23/18
+// Christine Goins  cgoins@hmc.edu  4/8/18
 // colorspace_conversion converts pixels from the camera colorspace to the desired colorspace
 
 module colorspace_conversion #(parameter PIXEL_WIDTH=16,
@@ -43,39 +43,30 @@ module matrix_mult #(parameter PIXEL_WIDTH=16,
 							input logic signed [8:0][INT_BITS+FRAC_BITS-1:0] matrix,
 							output logic [2:0][PIXEL_WIDTH-1:0] out);
 	
-	// make input signed
-	logic signed [2:0][PIXEL_WIDTH:0] signed_in;
 	// fixed point output
 	logic signed [2:0][PIXEL_WIDTH+FRAC_BITS+INT_BITS-1:0] fp_out, fp_out_pos;
 	// for checking if output is greater than 2^PIXEL_WIDTH
 	logic [2:0] too_big;
-	
-	// for testing
-	logic signed [PIXEL_WIDTH+FRAC_BITS+INT_BITS:0] r_a, r_b, r_c, g_a, g_b, g_c, b_a, b_b, b_c;
-	// red
-	assign r_a = signed_in[2]*matrix[2];
-	//assign r_b = signed_in[1]*matrix[1];
-	assign r_b = in[1]*matrix[1][INT_BITS+FRAC_BITS-2:0] - (in[1]<<(INT_BITS+FRAC_BITS-1))*matrix[1][INT_BITS+FRAC_BITS-1:0];
-	assign r_c = signed_in[0]*matrix[0];
-	// green
-	assign g_a = signed_in[2]*matrix[5];
-	assign g_b = signed_in[1]*matrix[4];
-	assign g_c = signed_in[0]*matrix[3];
-	// blue
-	assign b_a = signed_in[2]*matrix[8];
-	assign b_b = signed_in[1]*matrix[7];
-	assign b_c = signed_in[0]*matrix[6];
 
+	// matrix multiplication	
+	logic signed [PIXEL_WIDTH+FRAC_BITS+INT_BITS:0] b0, b1, b2, g0, g1, g2, r0, r1, r2; 
+	// red
+	assign r2 = in[2]*matrix[2][INT_BITS+FRAC_BITS-2:0] - (in[2]<<(INT_BITS+FRAC_BITS-1))*matrix[2][INT_BITS+FRAC_BITS-1];
+	assign r1 = in[1]*matrix[1][INT_BITS+FRAC_BITS-2:0] - (in[1]<<(INT_BITS+FRAC_BITS-1))*matrix[1][INT_BITS+FRAC_BITS-1];
+	assign r0 = in[0]*matrix[0][INT_BITS+FRAC_BITS-2:0] - (in[0]<<(INT_BITS+FRAC_BITS-1))*matrix[0][INT_BITS+FRAC_BITS-1];
+	// green
+	assign g2 = in[2]*matrix[5][INT_BITS+FRAC_BITS-2:0] - (in[2]<<(INT_BITS+FRAC_BITS-1))*matrix[5][INT_BITS+FRAC_BITS-1];
+	assign g1 = in[1]*matrix[4][INT_BITS+FRAC_BITS-2:0] - (in[1]<<(INT_BITS+FRAC_BITS-1))*matrix[4][INT_BITS+FRAC_BITS-1];
+	assign g0 = in[0]*matrix[3][INT_BITS+FRAC_BITS-2:0] - (in[0]<<(INT_BITS+FRAC_BITS-1))*matrix[3][INT_BITS+FRAC_BITS-1];
+	// blue
+	assign b2 = in[2]*matrix[8][INT_BITS+FRAC_BITS-2:0] - (in[2]<<(INT_BITS+FRAC_BITS-1))*matrix[8][INT_BITS+FRAC_BITS-1];
+	assign b1 = in[1]*matrix[7][INT_BITS+FRAC_BITS-2:0] - (in[1]<<(INT_BITS+FRAC_BITS-1))*matrix[7][INT_BITS+FRAC_BITS-1];
+	assign b0 = in[0]*matrix[6][INT_BITS+FRAC_BITS-2:0] - (in[0]<<(INT_BITS+FRAC_BITS-1))*matrix[6][INT_BITS+FRAC_BITS-1];
 	
-	//assign signed_in = in;
-	assign signed_in[2] = in[2];
-	assign signed_in[1] = in[1];
-	assign signed_in[0] = in[0];
-	
-	// matrix mutliplication and rounding
-	assign fp_out[2] = signed_in[2]*matrix[8] + signed_in[1]*matrix[7] + signed_in[0]*matrix[6] + 1<<(FRAC_BITS-1);
-	assign fp_out[1] = signed_in[2]*matrix[5] + signed_in[1]*matrix[4] + signed_in[0]*matrix[3] + 1<<(FRAC_BITS-1);
-	assign fp_out[0] = signed_in[2]*matrix[2] + signed_in[1]*matrix[1] + signed_in[0]*matrix[0] + 1<<(FRAC_BITS-1);
+	// adding up matrix mutliplication and rounding
+	assign fp_out[2] =  b0 + b1 + b2 + 28'd32;
+	assign fp_out[1] =  g0 + g1 + g2 + 28'd32;
+	assign fp_out[0] =  r0 + r1 + r2 + 28'd32;
 	
 	// clipping result of fixed point matrix multiplication to be in range [0,65535]
 	// assign to 0 if negative
