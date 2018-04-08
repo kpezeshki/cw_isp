@@ -51,10 +51,11 @@ module matrix_mult #(parameter PIXEL_WIDTH=16,
 	logic [2:0] too_big;
 	
 	// for testing
-	logic signed [PIXEL_WIDTH+FRAC_BITS+INT_BITS-1:0] r_a, r_b, r_c, g_a, g_b, g_c, b_a, b_b, b_c;
+	logic signed [PIXEL_WIDTH+FRAC_BITS+INT_BITS:0] r_a, r_b, r_c, g_a, g_b, g_c, b_a, b_b, b_c;
 	// red
 	assign r_a = signed_in[2]*matrix[2];
-	assign r_b = signed_in[1]*matrix[1];
+	//assign r_b = signed_in[1]*matrix[1];
+	assign r_b = in[1]*matrix[1][INT_BITS+FRAC_BITS-2:0] - (in[1]<<(INT_BITS+FRAC_BITS-1))*matrix[1][INT_BITS+FRAC_BITS-1:0];
 	assign r_c = signed_in[0]*matrix[0];
 	// green
 	assign g_a = signed_in[2]*matrix[5];
@@ -72,9 +73,9 @@ module matrix_mult #(parameter PIXEL_WIDTH=16,
 	assign signed_in[0] = in[0];
 	
 	// matrix mutliplication and rounding
-	assign fp_out[2] = signed_in[2]*matrix[8] + signed_in[1]*matrix[7] + signed_in[0]*matrix[6] + 2**(FRAC_BITS-1);
-	assign fp_out[1] = signed_in[2]*matrix[5] + signed_in[1]*matrix[4] + signed_in[0]*matrix[3] + 2**(FRAC_BITS-1);
-	assign fp_out[0] = signed_in[2]*matrix[2] + signed_in[1]*matrix[1] + signed_in[0]*matrix[0] + 2**(FRAC_BITS-1);
+	assign fp_out[2] = signed_in[2]*matrix[8] + signed_in[1]*matrix[7] + signed_in[0]*matrix[6] + 1<<(FRAC_BITS-1);
+	assign fp_out[1] = signed_in[2]*matrix[5] + signed_in[1]*matrix[4] + signed_in[0]*matrix[3] + 1<<(FRAC_BITS-1);
+	assign fp_out[0] = signed_in[2]*matrix[2] + signed_in[1]*matrix[1] + signed_in[0]*matrix[0] + 1<<(FRAC_BITS-1);
 	
 	// clipping result of fixed point matrix multiplication to be in range [0,65535]
 	// assign to 0 if negative
@@ -120,3 +121,4 @@ module flopr #(parameter DATA_WIDTH=1)
 		else		d <= q;
 
 endmodule
+
