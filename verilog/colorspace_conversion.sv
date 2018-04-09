@@ -13,14 +13,16 @@ module colorspace_conversion #(parameter PIXEL_WIDTH=16,
 										 input logic [PIXEL_WIDTH-1:0] pixel_in_green,
 										 input logic [PIXEL_WIDTH-1:0] pixel_in_blue,
 										 input logic signed [8:0][INT_BITS+FRAC_BITS-1:0] cc_coeff,
+                                                                                 input logic demosaic_done,
 										 output logic data_valid,
 										 output logic [PIXEL_WIDTH-1:0] pixel_out_red,
 										 output logic [PIXEL_WIDTH-1:0] pixel_out_green,
-										 output logic [PIXEL_WIDTH-1:0] pixel_out_blue);
+										 output logic [PIXEL_WIDTH-1:0] pixel_out_blue,
+                                                                                 output logic done);
 	
 	// result of matrix multiplication rounded
 	logic [2:0][PIXEL_WIDTH-1:0] pixel_calc;
-	
+	flopr #(1) done_flop(clk, reset, demosaic_done,done);
 	// data ready/valid
 	flopr #(1) ready_valid(clk, reset, data_ready, data_valid);
 
@@ -83,33 +85,5 @@ module matrix_mult #(parameter PIXEL_WIDTH=16,
 	assign out[1] = (too_big[1]) ? (2**PIXEL_WIDTH)-1 : fp_out_pos[1][PIXEL_WIDTH+FRAC_BITS-1:FRAC_BITS];
 	assign out[2] = (too_big[2]) ? (2**PIXEL_WIDTH)-1 : fp_out_pos[2][PIXEL_WIDTH+FRAC_BITS-1:FRAC_BITS];
 	
-endmodule
-
-
-// D Flip-flop with enable and asynchronous reset
-module flopenr #(parameter DATA_WIDTH=16)
-			  (input logic clk,
-			   input logic reset,
-				input logic en,
-			   input logic [DATA_WIDTH-1:0] q,
-			   output logic [DATA_WIDTH-1:0] d);
-
-	always_ff@(posedge clk, posedge reset)
-		if 	  (reset) 	d <= 0;
-		else if (en)	d <= q;
-
-endmodule
-
-// D Flip-flop with asynchronous reset
-module flopr #(parameter DATA_WIDTH=1)
-			 (input logic clk,
-			  input logic reset,
-			  input logic [DATA_WIDTH-1:0] q,
-			  output logic [DATA_WIDTH-1:0] d);
-
-	always_ff@(posedge clk, posedge reset)
-		if (reset)	d <= 0;
-		else		d <= q;
-
 endmodule
 
