@@ -10,7 +10,7 @@ module isp_control_testbench();
 // instantiate device under test
 control dut(
     clk, reset, new_frame, data_valid, read_data, 
-    frame_buffer_base_adr, write_address, write_address, 
+    frame_buffer_base_adr, write_address, write_enable, 
     wb_enable, cc_enable);
 
 // generate clock
@@ -37,7 +37,7 @@ always @(posedge clk)
 always @(negedge clk)
  if (~reset) begin // skip during reset
  if ({write_address, write_enable, wb_enable, cc_enable} !== expected) begin // check result
- $display("Error: inputs = %b %b %b %b", {new_frame, data_valid, read_data, frame_buffer_base_adr});
+ $display("Error: inputs = %b %b %b %b", new_frame, data_valid, read_data, frame_buffer_base_adr);
  $display(" outputs = %b %b %b %b (%b expected)",
  write_address, write_enable, wb_enable, cc_enable, expected);
  errors = errors + 1;
